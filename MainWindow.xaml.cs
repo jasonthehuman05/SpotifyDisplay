@@ -23,6 +23,9 @@ namespace SpotifyDisplay
         public MainWindow()
         {
             InitializeComponent();
+
+            //Test web handler
+            SpotifyDisplay.AuthHandler.AuthHandler ah = new SpotifyDisplay.AuthHandler.AuthHandler();
         }
     }
 }
