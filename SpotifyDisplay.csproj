@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="SpotifyAPI" Version="1.2.0" />
+    <PackageReference Include="SpotifyAPI.web" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
