@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /clientid.txt
 /clientsecret.txt
+/scopes.txt
