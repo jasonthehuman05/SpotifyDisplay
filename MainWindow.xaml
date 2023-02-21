@@ -5,11 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpotifyDisplay"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="Black">
+    <Window.Resources>
+        <ControlTemplate x:Key="progBar" TargetType="{x:Type ProgressBar}">
+            <Grid x:Name="TemplateRoot">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Determinate"/>
+                        <VisualState x:Name="Indeterminate"/>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="14"/>
+                <Rectangle x:Name="PART_Track" Height="28"/>
+                <Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
+                    <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" RadiusX="14" RadiusY="14"/>
+                    <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5" RadiusX="14" RadiusY="14">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
+                    </Rectangle>
+                </Grid>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="LayoutTransform" TargetName="TemplateRoot">
+                        <Setter.Value>
+                            <RotateTransform Angle="-90"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsIndeterminate" Value="true">
+                    <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid>
-        <Image x:Name="albumArtImage" Height="180" Margin="100,114,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180"/>
-        <Label x:Name="titleLabel" Content="Label" HorizontalAlignment="Left" Height="35" Margin="325,149,0,0" VerticalAlignment="Top" Width="300"/>
-        <Label x:Name="artistLabel" Content="Label" HorizontalAlignment="Left" Height="35" Margin="325,209,0,0" VerticalAlignment="Top" Width="300"/>
+        <Grid.Background>
+            <ImageBrush/>
+        </Grid.Background>
+        <Image x:Name="albumArtImageBackground" Height="815" VerticalAlignment="Top" HorizontalAlignment="Left" Width="815" Source="/TG92ZWx5IERheQ==.png" Margin="-10,-166,0,0">
+            <Image.Effect>
+                <BlurEffect Radius="100" KernelType="Gaussian"/>
+            </Image.Effect>
+        </Image>
+        <Rectangle HorizontalAlignment="Center" Height="434" VerticalAlignment="Center" Width="800" Fill="#99000000"/>
+
+        <Image x:Name="albumArtImage" Height="180" Margin="100,114,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180" Source="/TG92ZWx5IERheQ==.png">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Label x:Name="titleLabel" Content="Label" HorizontalAlignment="Left" Height="61" Margin="300,114,0,0" VerticalAlignment="Top" Width="480" FontSize="36" Foreground="White"/>
+        <Label x:Name="artistLabel" Content="Label" HorizontalAlignment="Left" Height="35" Margin="300,180,0,0" VerticalAlignment="Top" Width="395" FontSize="18" Foreground="White"/>
+        <ProgressBar Template="{DynamicResource progBar}" x:Name="timeProgBar" HorizontalAlignment="Left" Height="25" Margin="300,239,0,0" VerticalAlignment="Top" Width="445" Foreground="White" Background="#FFA5A5A5" BorderBrush="{x:Null}"/>
 
     </Grid>
 </Window>

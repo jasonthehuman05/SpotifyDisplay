@@ -58,6 +58,7 @@ namespace SpotifyDisplay
             {
                 FullTrack song = (FullTrack)cp.Item;
 
+                //If a different song is playing, show the details
                 if (currentSong != song)
                 //if(true)
                 {
@@ -82,6 +83,12 @@ namespace SpotifyDisplay
 
                     UpdateSongDetails(artistsString, title, imageFilePath);
                 }
+
+                //Update Timestamp
+                long duration = song.DurationMs;
+                long currentTime = long.Parse(cp.ProgressMs.ToString());
+                //Debug.WriteLine($"{currentTime} / {duration}");
+                UpdateTimebar(duration, currentTime);
             }
         }
 
@@ -91,12 +98,22 @@ namespace SpotifyDisplay
                 artistLabel.Content = artists;
                 titleLabel.Content = title;
                 albumArtImage.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + imageFP, UriKind.Absolute));
+                albumArtImageBackground.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + imageFP, UriKind.Absolute));
+            }), DispatcherPriority.SystemIdle);
+        }
+
+        private void UpdateTimebar(long duration, long position)
+        {
+            Dispatcher.BeginInvoke(new Action(() => {
+                timeProgBar.Maximum = duration;
+                timeProgBar.Value = position;
             }), DispatcherPriority.SystemIdle);
         }
 
         private string DownloadImage(string url, string name)
         {
-            string filepath = $"images/{name}.png";
+            string name64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(name));
+            string filepath = $"images/{name64}.png";
             try
             {
                 using (HttpClient client = new HttpClient())
