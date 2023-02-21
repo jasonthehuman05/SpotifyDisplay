@@ -19,7 +19,6 @@ namespace SpotifyDisplay.Spotify
             while(auth.token == "") { } //Wait until token generated
             accessToken = auth.token;
             client = new SpotifyClient(accessToken);
-            client.Player.SkipNext();
         }
     }
 }

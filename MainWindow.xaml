@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Image x:Name="albumArtImage" Height="180" Margin="100,114,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180"/>
+        <Label x:Name="titleLabel" Content="Label" HorizontalAlignment="Left" Height="35" Margin="325,149,0,0" VerticalAlignment="Top" Width="300"/>
+        <Label x:Name="artistLabel" Content="Label" HorizontalAlignment="Left" Height="35" Margin="325,209,0,0" VerticalAlignment="Top" Width="300"/>
 
     </Grid>
 </Window>
