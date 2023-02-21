@@ -18,7 +18,8 @@ namespace SpotifyDisplay.AuthHandler
             callbackURL = "http://localhost:4040/callback";
 
             string authURL = SpotifyAuthLink(); //Generate the auth link for user authentication
-            Process.Start("explorer", $"\"{authURL}\""); //Open generated link
+            string fp = GenerateLinkOpener(authURL);
+            Process.Start("explorer", $"\"{fp}\""); //Open generated link
             
             string code = AuthoriseAccess(); //Get auth
             string token = GetAuthToken(code);
@@ -36,6 +37,17 @@ namespace SpotifyDisplay.AuthHandler
             //Save URL to file
             System.IO.File.WriteAllText("url.txt", url);
             return url;
+        }
+
+        private string GenerateLinkOpener(string url)
+        {
+            string template = System.IO.File.ReadAllText("AuthHandler/redirect.html");
+            template = template.Replace("#####", url);
+
+            string fileName = $"{new Random().Next(1000).ToString()}.html";
+            System.IO.File.WriteAllText(fileName, template);
+
+            return fileName;
         }
 
         private string AuthoriseAccess()
@@ -83,10 +95,26 @@ namespace SpotifyDisplay.AuthHandler
             };
             FormUrlEncodedContent content = new FormUrlEncodedContent(kp);
 
+            //Add Headers
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+            //-----Generate auth string
+            string cid = System.IO.File.ReadAllText("clientid.txt");
+            string csc = System.IO.File.ReadAllText("clientsecret.txt");
+
+            string idsk = $"{cid}:{csc}";
+            byte[] stringBytes = System.Text.Encoding.UTF8.GetBytes(idsk);
+            //Encode as b64
+            idsk = Convert.ToBase64String(stringBytes);
+
+            //content.Headers.Add("Authorization", idsk);
+            content.Headers.TryAddWithoutValidation("Authorization", idsk);
+
+
             //Send request
             HttpResponseMessage response = httpClient.PostAsync(url, content).Result;
             string res = response.Content.ReadAsStringAsync().Result;
-
+            Debug.WriteLine("Hello there!");
             Debug.WriteLine(res);
 
             return res;
