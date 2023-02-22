@@ -130,5 +130,11 @@ namespace SpotifyDisplay
             catch { }
             return filepath;
         }
+
+        private void WindowClosed(object sender, EventArgs e)
+        {
+            updateDisplayTimer.Stop();
+            updateDisplayTimer.Dispose();
+        }
     }
 }
